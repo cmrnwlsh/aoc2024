@@ -19,7 +19,7 @@ static EXAMPLE: &str = "
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    println!("{}", d2p1().await?);
+    println!("{}", d2p1(input(2).await?)?);
     Ok(())
 }
 
@@ -35,13 +35,13 @@ async fn input(n: u32) -> Result<String> {
         .map_err(|e| e.into())
 }
 
-async fn d1p1() -> Result<u32> {
+fn d1p1(input: String) -> Result<u32> {
     let (mut l, mut r) = (
         BinaryHeap::<Reverse<u32>>::new(),
         BinaryHeap::<Reverse<u32>>::new(),
     );
     let mut flag = false;
-    for n in input(1).await?.split_whitespace() {
+    for n in input.split_whitespace() {
         if flag { &mut l } else { &mut r }.push(Reverse(n.parse()?));
         flag = !flag
     }
@@ -51,10 +51,10 @@ async fn d1p1() -> Result<u32> {
         .fold(0, |acc, (l, r)| acc + l.0.abs_diff(r.0)))
 }
 
-async fn d1p2() -> Result<u32> {
+fn d1p2(input: String) -> Result<u32> {
     let (mut l, mut r) = (Vec::<u32>::new(), Vec::<u32>::new());
     let mut flag = false;
-    for n in input(1).await?.split_whitespace() {
+    for n in input.split_whitespace() {
         if flag { &mut l } else { &mut r }.push(n.parse()?);
         flag = !flag
     }
@@ -65,7 +65,7 @@ async fn d1p2() -> Result<u32> {
     Ok(l.iter().fold(0, |acc, n| acc + n * f.get(n).unwrap_or(&0)))
 }
 
-async fn d2p1() -> Result<u32> {
+fn d2p1(input: String) -> Result<u32> {
     fn cond1(v: &[u32]) -> bool {
         v.iter().map_windows(|[x, y]| x <= y).all(|b| b)
     }
@@ -77,8 +77,7 @@ async fn d2p1() -> Result<u32> {
             .map_windows(|[x, y]| matches!(x.abs_diff(**y), 1..=3))
             .all(|b| b)
     }
-    let reports = input(2)
-        .await?
+    let reports = input
         .trim()
         .split('\n')
         .map(|s| {
