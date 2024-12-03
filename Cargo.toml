@@ -1,0 +1,12 @@
+[package]
+name = "aoc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.93"
+reqwest = "0.12.9"
+tokio = { version = "1.41.1", features = ["macros", "rt-multi-thread"] }
+
+[env]
+session = "session=53616c7465645f5f6d4cb265539b19d2e56e311ddf1cbc5cf7fb80d7f454ebed59d99158a2f1f11f87ee25cd7c79f27cf1aa6a211331781a08208a92a8525ab4"
