@@ -32,31 +32,37 @@ fn parse_reports(input: &str) -> Result<Vec<Vec<u32>>> {
         .collect()
 }
 
-pub fn p1(input: &str) -> Result<u32> {
-    Ok(parse_reports(input)?
-        .iter()
-        .filter_map(|r| check(r))
-        .count() as u32)
+pub fn p1(input: &str) -> Result<String> {
+    Ok(format!(
+        "{}",
+        parse_reports(input)?
+            .iter()
+            .filter_map(|r| check(r))
+            .count()
+    ))
 }
-pub fn p2(input: &str) -> Result<u32> {
-    Ok(parse_reports(input)?
-        .iter()
-        .fold(HashMap::<&Vec<u32>, Vec<Vec<u32>>>::new(), |mut map, v| {
-            (0..v.len()).for_each(|i| {
-                let mut tmp = v.clone();
-                tmp.remove(i);
-                map.entry(v).or_insert(vec![tmp.clone()]).push(tmp);
-            });
-            map
-        })
-        .iter()
-        .filter_map(|(k, v)| {
-            check(k).or_else(|| {
-                v.iter()
-                    .map(|r| check(r))
-                    .any(|e| e.is_some())
-                    .then_some(())
+pub fn p2(input: &str) -> Result<String> {
+    Ok(format!(
+        "{}",
+        parse_reports(input)?
+            .iter()
+            .fold(HashMap::<&Vec<u32>, Vec<Vec<u32>>>::new(), |mut map, v| {
+                (0..v.len()).for_each(|i| {
+                    let mut tmp = v.clone();
+                    tmp.remove(i);
+                    map.entry(v).or_insert(vec![tmp.clone()]).push(tmp);
+                });
+                map
             })
-        })
-        .count() as u32)
+            .iter()
+            .filter_map(|(k, v)| {
+                check(k).or_else(|| {
+                    v.iter()
+                        .map(|r| check(r))
+                        .any(|e| e.is_some())
+                        .then_some(())
+                })
+            })
+            .count()
+    ))
 }

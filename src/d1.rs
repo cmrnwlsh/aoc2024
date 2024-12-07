@@ -4,7 +4,16 @@ use std::{
     collections::{BinaryHeap, HashMap},
 };
 
-pub fn d1p1(input: String) -> Result<u32> {
+pub static EXAMPLE: &str = "
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3
+";
+
+pub fn p1(input: &str) -> Result<String> {
     let (mut l, mut r) = (
         BinaryHeap::<Reverse<u32>>::new(),
         BinaryHeap::<Reverse<u32>>::new(),
@@ -14,13 +23,16 @@ pub fn d1p1(input: String) -> Result<u32> {
         if flag { &mut l } else { &mut r }.push(Reverse(n.parse()?));
         flag = !flag
     }
-    Ok(l.into_sorted_vec()
-        .iter()
-        .zip(r.into_sorted_vec().iter())
-        .fold(0, |acc, (l, r)| acc + l.0.abs_diff(r.0)))
+    Ok(format!(
+        "{}",
+        l.into_sorted_vec()
+            .iter()
+            .zip(r.into_sorted_vec().iter())
+            .fold(0, |acc, (l, r)| acc + l.0.abs_diff(r.0))
+    ))
 }
 
-pub fn d1p2(input: String) -> Result<u32> {
+pub fn p2(input: &str) -> Result<String> {
     let (mut l, mut r) = (Vec::<u32>::new(), Vec::<u32>::new());
     let mut flag = false;
     for n in input.split_whitespace() {
@@ -31,5 +43,8 @@ pub fn d1p2(input: String) -> Result<u32> {
         map.entry(val).and_modify(|frq| *frq += 1).or_insert(1);
         map
     });
-    Ok(l.iter().fold(0, |acc, n| acc + n * f.get(n).unwrap_or(&0)))
+    Ok(format!(
+        "{}",
+        l.iter().fold(0, |acc, n| acc + n * f.get(n).unwrap_or(&0))
+    ))
 }
