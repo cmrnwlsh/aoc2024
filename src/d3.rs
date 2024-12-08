@@ -16,13 +16,14 @@ pub fn p1(input: &str) -> Result<String> {
                     .strip_suffix(")")
                     .unwrap_or(m)
                     .split(',')
-                    .collect::<Vec<&str>>()[..]
+                    .flat_map(str::parse)
+                    .collect::<Vec<u32>>()[..]
                 else {
                     bail!("incorrect token")
                 };
-                acc += x.parse::<u32>()? * y.parse::<u32>()?;
+                acc += x * y;
             }
-            Ok::<u32, anyhow::Error>(acc)
+            Ok(acc)
         })?
     ))
 }
