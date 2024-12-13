@@ -1,5 +1,6 @@
 #![feature(iter_map_windows)]
 #![feature(let_chains)]
+#![feature(if_let_guard)]
 
 mod d1;
 mod d2;
