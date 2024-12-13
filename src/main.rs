@@ -5,6 +5,7 @@
 mod d1;
 mod d2;
 mod d3;
+mod d4;
 use anyhow::{bail, Result};
 use clap::Parser;
 use seq_macro::seq;
